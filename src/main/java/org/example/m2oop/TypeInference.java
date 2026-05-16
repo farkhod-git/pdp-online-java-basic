@@ -1,4 +1,4 @@
-package org.example.oop;
+package org.example.m2oop;
 
 public class TypeInference {
     static void main() {
