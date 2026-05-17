@@ -1,4 +1,4 @@
-package org.example.m3concurrency.synchronization.lockcondition;
+package org.example.m3concurrency.synchronization;
 
 import java.util.Random;
 
@@ -14,7 +14,7 @@ public class RaceConditionDemo {
             int from = i;
             new Thread(() -> {
                 while (true) {
-                    bank.transfer(from, random.nextInt(n), random.nextInt(10000) / 100D);
+                    bank.transferSynchronized(from, random.nextInt(n), random.nextInt(10000) / 100D);
                 }
             }).start();
         }

@@ -1,4 +1,4 @@
-package org.example.m3concurrency.synchronization.lockcondition;
+package org.example.m3concurrency.synchronization;
 
 import java.util.Arrays;
 import java.util.concurrent.locks.Condition;
@@ -44,6 +44,28 @@ class Bank {
             lock.unlock();
         }
     }
+
+    public void transferSynchronized(int from, int to, double amount) {
+        try {
+            synchronized (accounts) {
+                while (accounts[from] < amount) {
+                    accounts.wait();
+                }
+
+                accounts[from] -= amount;
+                accounts[to] += amount;
+                System.out.println(Thread.currentThread().getName() + " transferred " + from + " to " + to + " amount: " + amount);
+                System.out.println(totalBalance());
+
+                Thread.sleep(10);
+
+                accounts.notifyAll();
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public double totalBalance() {
         return Arrays.stream(accounts).sum();
